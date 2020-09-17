@@ -1,0 +1,221 @@
+<!-- Portales es padre de nav-bar -->
+<!-- El evento refresh se emite desde el nav-bar -->
+<app-nav-bar (clickMisFav)='mostrarFav()' (clickDame20)='random20char()' (clickGoLoc)='locByName($event)'  (clickChar)='clickChar($event)'  (clickLoc)='clickLoc($event)' (clickGo)='charByName($event)' (clickRefresh)='refresh()'></app-nav-bar>
+
+<!--  CHARACTER  -->
+<div *ngIf='btnChar'>
+  <!-- Datos de localidad seleccionada -->
+  <div *ngIf='btnLocName'  class="uk-width-2-2">
+    <ul *ngFor='let l of currentLocName.results' class="uk-list uk-list-striped">
+      <h2>{{l.name}}</h2>
+      <li>{{ l.dimension}} </li>
+      <li >Residents:                      
+      <span *ngFor='let y of l.residents'> <a (click)="charById(y.slice(42))" > {{y.slice(42)}} </a>
+      </span>              
+      </li>
+    </ul>
+  </div>   
+  <!-- Conteiner Char -->
+    <div class="uk-container ">
+      <!-- Grid char -->
+      <div class="uk-text-center" uk-grid>
+      <!-- lISTA DE Favoritos -->
+        <div *ngIf='btnMostrarFav'  class="uk-width-2-2 ">
+          <ul *ngFor='let l of currentChar20Id' class="uk-list uk-list-striped">
+            <h2>{{l.name}}         
+            </h2>
+            <img src={{l.image}}  alt="">
+            <li>
+              <button (click)='clickRemoveFav(l.id)'   *ngIf='checkFav(l.id)' mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+              <mat-icon >favorite</mat-icon>
+              </button>
+              <button (click)='clickAddFav(l.id)' *ngIf='!checkFav(l.id)' mat-icon-button  aria-label="Example icon-button with a heart icon">
+              <mat-icon>favorite</mat-icon>
+              </button>
+            </li>
+            <li >Status: {{l.status}}</li>
+            <li >Specie: {{l.species}}</li>
+            <li >Gender: {{l.gender}}</li>
+            <li >Origin: {{l.origin.name}}</li>
+            <li (click)="locByName(l.location.name)" >Location: <a>{{l.location.name}}</a> </li>
+            <li >Episodes:
+            <span *ngFor='let y of l.episode' > {{y.slice(40)}} </span>
+            </li>
+          </ul>
+        </div> 
+         
+      <!-- lISTA DE RESULTADOS 20 ALEATORIOS -->
+      <div *ngIf='btnMis20'  class="uk-width-2-2 ">
+        <ul *ngFor='let l of currentChar20Id' class="uk-list uk-list-striped">
+          <h2>{{l.name}}</h2>
+          <img src={{l.image}}>
+          <li>
+            <button (click)='clickRemoveFav(l.id)'   *ngIf='checkFav(l.id)' mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+            <mat-icon >favorite</mat-icon>
+            </button>
+            <button (click)='clickAddFav(l.id)' *ngIf='!checkFav(l.id)' mat-icon-button  aria-label="Example icon-button with a heart icon">
+            <mat-icon>favorite</mat-icon>
+            </button>
+          </li>
+          <li >Status: {{l.status}}</li>
+          <li >Specie: {{l.species}}</li>
+          <li >Gender: {{l.gender}}</li>
+          <li >Origin: {{l.origin.name}}</li>
+          <li (click)="locByName(l.location.name)" >Location: <a>{{l.location.name}}</a> </li>
+          <li >Episodes:
+          <span *ngFor='let y of l.episode' > {{y.slice(40)}} </span>
+          </li>
+        </ul>
+      </div>   
+      <div  *ngIf='btnName'  class="uk-width-2-2">
+        <!-- lista de personajes por nombre -->
+        <ul *ngFor='let l of currentName.results' class="uk-list uk-list-striped">
+          <h2>{{l.name}}</h2>
+          <img src={{l.image}}  alt="">
+          <li>
+            <button (click)='clickRemoveFav(l.id)'   *ngIf='checkFav(l.id)' mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+            <mat-icon >favorite</mat-icon>
+            </button>
+            <button (click)='clickAddFav(l.id)' *ngIf='!checkFav(l.id)' mat-icon-button  aria-label="Example icon-button with a heart icon">
+            <mat-icon>favorite</mat-icon>
+            </button>
+          </li>
+          <li >Status: {{l.status}}</li>
+          <li >Specie: {{l.species}}</li>
+          <li >Gender: {{l.gender}}</li>
+          <li >Origin: {{l.origin.name}}</li>
+          <li (click)="locByName(l.location.name)" >Location: <a>{{l.location.name}}</a> </li>
+          <li >Episodes:
+            <span *ngFor='let y of l.episode' > {{y.slice(40)}} </span>
+          </li>
+        </ul>
+      </div>   
+    </div>  
+  </div>  
+  <!-- <LOS PORTALES> -->
+  <div class="uk-container">
+    <div class="uk-text-center" uk-grid>
+      <div class="uk-width-2-2"></div>
+        <!-- Los nombres de los personajes se cargan arriba de los portales cuando obtienen un valor-->
+        <div class="uk-width-1-2"><h1 *ngIf='btnStatus'>{{currentChar.name}}</h1></div>
+        <div class="uk-width-1-2"><h1 *ngIf='btnStatus2'>{{currentChar2.name}}</h1></div>
+        <!-- Primer Portal-->
+        <div class="uk-width-1-2">
+          <div class="uk-animation-toggle" tabindex="0">
+          <!-- Al clickear el portal se obtiene un numero random entr 1 y 671 que sera el id del personaje que se guarda en currentChar-->
+          <!-- Cuando se le hace click btnStatus se vuelve true y se activa el contador (counter2) el btnStatus activa una animacion de salida y el contador esconde el portal pero da tiempo a que pase primero la animacion-->
+            <div (click)="clickEvent()" [ngClass]="btnStatus ? 'uk-animation-scale-up uk-animation-reverse  ' : ''" [ngClass]="counter2 ? 'hide' : ''">
+              <img src="../assets/portalgif.gif">
+            </div>      
+          </div>
+              <!-- cuando btnStatus sea true y tenga un personaje cargado en CurrentChar lo muestro, cuando el portal se esconda la imagen toma su lugar -->               
+              <img *ngIf='btnStatus' src={{currentChar.image}}  alt=""> 
+        </div>
+        <!-- con el segundo portal cambie el nombre de las variables para que sea independiente-->    
+        <div class="uk-width-1-2">
+          <div class="uk-animation-toggle" tabindex="0">
+            <div (click)="clickEvent2()" [ngClass]="btnStatus2 ? 'uk-animation-scale-up uk-animation-reverse  ' : ''" [ngClass]="counter ? 'hide' : ''">
+              <img src="../assets/portalgif.gif">
+            </div>      
+          </div>
+          <img *ngIf='btnStatus2' src={{currentChar2.image}}>
+        </div> 
+            
+    </div>
+  </div>
+  <hr class="uk-divider-small">
+  <!-- desgloso los datos abajo de cada portal de la api en una lista-->
+  <div class="uk-container ">
+    <div class="uk-text-center" uk-grid>
+      <!-- LISTA DEL PORTAL 1-->
+      <!-- si btnStatus es off no muestro la lista-->
+      <div  *ngIf='btnStatus'  class="uk-width-1-2">
+        <ul class="uk-list uk-list-striped .uk-list-large">
+          <li>
+            <button (click)='clickRemoveFav(currentChar.id)'   *ngIf='checkFav(currentChar.id)' mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+              <mat-icon >favorite</mat-icon>
+            </button>
+            <button (click)='clickAddFav(currentChar.id)' *ngIf='!checkFav(currentChar.id)' mat-icon-button  aria-label="Example icon-button with a heart icon">
+              <mat-icon>favorite</mat-icon>
+            </button>
+            </li>
+          <li>Status:  {{currentChar.status}}</li>
+          <li>Specie:  {{currentChar.species}} </li>
+          <li>Type:     {{currentChar.type}}</li>
+          <li>Gender:   {{currentChar.gender}}</li>
+          <li>Origin:  <a>{{currentChar.origin.name}}</a>  </li>
+          <li>Location:   <a href="">{{currentChar.location.name}}</a></li>
+              <ul class="uk-list uk-list-striped .uk-list-large">
+                <li >  <span *ngFor='let l of currentChar.episode' >
+                  Episode: <a>{{l.slice(40)}}</a>
+                </span></li>
+              </ul>
+        </ul>
+      </div>
+      <!-- LISTA DEL PORTAL 2-->
+      <div  *ngIf='btnStatus'  class="uk-width-1-2">
+        <ul class="uk-list uk-list-striped .uk-list-large">
+          <li>
+            <button (click)='clickRemoveFav(currentChar2.id)'   *ngIf='checkFav(currentChar2.id)' mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+              <mat-icon >favorite</mat-icon>
+            </button>
+            <button (click)='clickAddFav(currentChar2.id)' *ngIf='!checkFav(currentChar2.id)' mat-icon-button  aria-label="Example icon-button with a heart icon">
+              <mat-icon>favorite</mat-icon>
+            </button>
+            </li>
+          <li>Status:  {{currentChar2.status}}</li>
+          <li>Specie:  {{currentChar2.species}} </li>
+          <li>Type:     {{currentChar2.type}}</li>
+          <li>Gender:   {{currentChar2.gender}}</li>
+          <li>Origin:   <a href="">{{currentChar2.origin.name}}</a></li>
+          <li>Location:   <a href="">{{currentChar2.location.name}}</a></li>
+            <li>
+              <ul class="uk-list uk-list-striped .uk-list-large">
+                <li  >  <span *ngFor='let l of currentChar2.episode'>
+                  <a>Episode: {{l.slice(40)}}</a>
+                </span></li>
+              </ul>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOCATION -->
+<div *ngIf='btnLoc'>
+
+<!-- lISTA DE RESULTADOS -->
+  <div class="uk-container ">
+      <div *ngIf='btnLocName' class="uk-text-center" uk-grid>
+        <div  *ngIf='btnStatusResident'  class="uk-width-2-2">
+          <ul class="uk-list uk-list-striped .uk-list-large">
+            <h1>{{currentCharId.name}}</h1>
+            <img src={{currentCharId.image}}>
+            <li>Status:  {{currentCharId.status}}</li>
+            <li>Specie:  {{currentCharId.species}} </li>
+            <li>Type:     {{currentCharId.type}}</li>
+            <li>Gender:   {{currentCharId.gender}}</li>
+            <li>Origin:  <a>{{currentCharId.origin.name}}</a>  </li>
+            <li>Location:   <a href="">{{currentCharId.location.name}}</a></li>
+                <ul class="uk-list uk-list-striped .uk-list-large">
+                  <li >  <span *ngFor='let l of currentCharId.episode' >
+                    Episode: <a>{{l.slice(40)}}</a>
+                  </span></li>
+                </ul>
+          </ul>
+        </div>
+           <div *ngIf='btnLocName'  class="uk-width-2-2">
+                  <ul *ngFor='let l of currentLocName.results' class="uk-list uk-list-striped">
+                    <h2>{{l.name}}</h2>
+                      <!-- <li >Id: {{l.id}}</li> -->
+                    <li>{{ l.dimension}} </li>
+                    <li >Residents:                      
+                      <span *ngFor='let y of l.residents'> <a (click)="charById(y.slice(42))" > {{y.slice(42)}} </a>
+                          </span>              
+                    </li>
+                  </ul>
+            </div>   
+    </div>  
+  </div>  
+</div> 

@@ -1,0 +1,39 @@
+<nav class="uk-navbar uk-margin" uk-navbar>
+<div class="uk-navbar-item uk-navbar-center">
+  <div class="uk-inline">
+    <a class="uk-navbar-toggle "  uk-navbar-toggle-icon href="#"></a>
+    <div uk-dropdown="mode: click">
+      <ul class="uk-nav uk-dropdown-nav">
+      <li (click)="clickEventChar()" class="uk-active"><a href="#">Character</a></li>
+      <li><a (click)="clickEventLoc()" href="#">Location</a></li>
+      <li><a  href="#">Episode</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf='btnChar'>
+    <input [(ngModel)]='name' class="uk-input uk-form-width-small" placeholder="Character Name....">
+    <button (click)="clickEventGo()" class="uk-button uk-button-default"> <span uk-icon="chevron-up"*ngIf='btnStatus'></span> Go! <span uk-icon="chevron-up"*ngIf='btnStatus'></span>  </button>
+ 
+    <a (click)="clickEvent()" uk-icon="refresh"></a>
+
+    </div>  
+
+ 
+
+  <div *ngIf='btnLoc'>
+    <input [(ngModel)]='locName' class="uk-input uk-form-width-small" placeholder="Location Name...."> 
+    <button (click)="clickEventGoLoc()" class="uk-button uk-button-default"> <span uk-icon="chevron-up"*ngIf='btnStatusLoc'></span> Go! <span uk-icon="chevron-up"*ngIf='btnStatusLoc'></span>  </button>
+    <a (click)="clickEvent()" uk-icon="refresh"></a>
+  </div>  
+ </div>
+
+
+ <div class=" uk-navbar-item uk-navbar-right">
+  <button (click)="clickEvent20()" class="uk-button uk-button-default">  Dame 20 </button>
+  <button (click)="clickEventMisFav()" class="uk-button uk-button-default"> Mis favoritos </button>
+  </div>
+  
+</nav>
+
+
