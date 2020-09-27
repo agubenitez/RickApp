@@ -72,6 +72,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 
 
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,9 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
     ResultadoComponent,
     NavBarComponent,
    
-    LocationComponent
+    LocationComponent,
+   
+    FooterComponent
     
 
   ],

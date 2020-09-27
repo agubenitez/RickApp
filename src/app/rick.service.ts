@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import{HttpClient} from "@angular/common/http";
 
 import { environment } from "src/environments/environment";
+import { HomePageComponent } from './home-page/home-page.component';
 
 
 @Injectable({
@@ -17,11 +18,12 @@ export class RickService {
       `${environment.apiUrl}/character/${char}`
     );
   }
-  getCharacterByName(name: string){
+  getCharacterByName(name: string, page=1){
     return this.http.get(
-      `${environment.apiUrl}/character/?name=${name}`
+      `${environment.apiUrl}/character/?page=${page}&name=${name}`
     );
   }
+  
   getRandomLoc(loc: number) {
     return this.http.get(
       `${environment.apiUrl}/location/${loc}`
@@ -33,10 +35,30 @@ export class RickService {
     );
   }
 
-  getMultipleChar(char: []) {
+  getMultipleChar(char: [], page=1) {
     return this.http.get(
-      `${environment.apiUrl}/character/${char}`
+      `${environment.apiUrl}/character/${char}/?page=${page}`
     );
   }
 
-}
+  getMultipleLoc(char: []) {
+    return this.http.get(
+      `${environment.apiUrl}/location/${char}`
+    );
+  }
+
+  getAllLoc(){
+    return this.http.get(
+      `${environment.apiUrl}/location/`
+    );
+  }
+
+
+  getNextPage(next:string){
+  
+    return this.http.get(
+      `${next}`
+    );
+ 
+  }
+}  
